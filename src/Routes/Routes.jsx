@@ -4,6 +4,7 @@ import {
 import Banner from "../Pages/Banner/Banner";
 import Main from "../Pages/Main/Main";
 import MealDetails from "../Pages/MealDetails/MealDetails";
+import MealsSection from "../Pages/MealsSection/MealsSection";
 
 
 export const router = createBrowserRouter([
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
             path: "mealsDetails/:id",
             loader: ({params}) => fetch(`http://localhost:5000/meals/${params.id}`) ,
             element: <MealDetails></MealDetails>
+        },
+        {
+            path: "mealsSection",
+            element: <MealsSection></MealsSection>
         }
       ]
     },

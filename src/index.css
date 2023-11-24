@@ -6,3 +6,15 @@
 .merienda{
     font-family: 'Merienda', cursive;
 }
+
+
+::-webkit-scrollbar {
+    width: 8px; /* Set the width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: orange;
+    border-radius: 20px;
+    opacity: 60;
+}
+

@@ -32,7 +32,7 @@ const MealDetails = () => {
                             <p className="py-2 font-semibold"><span className="text-orange-500">Ingredients: </span></p>
                             <p>{ingredientList}</p>
                         </div>
-                        <div className="flex md:flex-row mt-5 flex-col gap-3 md:gap-0 items-center justify-between w-full">
+                        <div className="flex md:flex-row mt-5 flex-col gap-3 md:gap-5  items-center justify-between w-full">
                             <p className="merienda text-orange-500">Rating: {rating}/5</p>
                             <div className="flex  justify-center items-center gap-2">
                             <p className="merienda text-orange-500">Like this meal:</p>
