@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import TextTransition, { presets } from 'react-text-transition';
+import HeaderTitles from '../HeaderTitles/HeaderTitles';
+import TabsComponent from '../Tab/TabsComponent';
+
+
 
 const Banner = () => {
     const TEXTS = [
@@ -32,25 +36,33 @@ const Banner = () => {
     }, [images.length]);
 
     return (
-        <div className="relative min-h-screen">
-            {images.map((image, index) => (
-                <div
-                    key={index}
-                    className={`absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : ''
-                        }`}
-                    style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover' }}
-                ></div>
-            ))}
-            <div className="absolute top-0 left-0 w-full h-full bg-opacity-80 bg-black"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-neutral-content z-10">
-                <div className="max-w-md">
-                    <h1 className="mb-5 text-5xl font-bold merienda text-yellow-400">Hostel Meal Management</h1>
-                    <p className="mb-5 text-xl">
-                        <TextTransition className='w-full flex items-center justify-center text-center' springConfig={presets.wobbly}>{TEXTS[index % TEXTS.length]}</TextTransition>
-                    </p>
-
+        <div>
+            {/* banner start */}
+            <div className="relative min-h-screen">
+                {images.map((image, index) => (
+                    <div
+                        key={index}
+                        className={`absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : ''
+                            }`}
+                        style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover' }}
+                    ></div>
+                ))}
+                <div className="absolute top-0 left-0 w-full h-full bg-opacity-80 bg-black"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-neutral-content z-10">
+                    <div className="max-w-md">
+                        <h1 className="mb-5 text-5xl font-bold merienda text-yellow-400">Hostel Meal Management</h1>
+                        <p className="mb-5 text-xl">
+                            <TextTransition className='w-full flex items-center justify-center text-center' springConfig={presets.wobbly}>{TEXTS[index % TEXTS.length]}</TextTransition>
+                        </p>
+                        <input type="text" placeholder="Find your meal...." className="input text-yellow-400 placeholder-yellow-400 input-bordered bg-transparent input-warning w-full max-w-xs" />
+                    </div>
                 </div>
             </div>
+            {/* banner end */}
+            <HeaderTitles heading={'Our Meals'}></HeaderTitles>
+            {/* tab start */}
+            <TabsComponent></TabsComponent>
+            {/* tab end */}
         </div>
     );
 };

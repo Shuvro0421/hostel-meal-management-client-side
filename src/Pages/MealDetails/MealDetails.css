@@ -1,0 +1,16 @@
+.thin-scrollbar::-webkit-scrollbar {
+    width: 6px; /* Set the width of the scrollbar */
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(136, 136, 136, 0.5);
+    border-radius: 20px;
+    opacity: 60;
+}
+
+/* For Firefox */
+.thin-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(136, 136, 136, 0.5) transparent;
+    border-radius: 20px;
+}

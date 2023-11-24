@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
-import Banner from "../Banner/Banner";
+import { Outlet } from "react-router-dom";
+
 import NavBar from "../NavBar/NavBar";
 
 
@@ -10,7 +11,7 @@ const Main = () => {
                 <title>Meal Management | Home</title>
             </Helmet>
             <NavBar></NavBar>
-            <Banner></Banner>
+            <Outlet></Outlet>
         </div>
     );
 };
