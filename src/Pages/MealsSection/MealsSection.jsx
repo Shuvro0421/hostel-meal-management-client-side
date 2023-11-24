@@ -1,11 +1,11 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useMeals from '../../components/hooks/useMeals';
 import AllMeal from '../Meals/AllMeal';
 
 const MealsSection = () => {
   const [page, setPage] = useState(1); // Track the current page
-  const [meals,  hasMore] = useMeals(page); // Assuming useMeals takes a page parameter
+  const [meals, hasMore] = useMeals(page); // Assuming useMeals takes a page parameter
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filter meals based on the mealTitle
@@ -34,23 +34,28 @@ const MealsSection = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <InfiniteScroll
-        dataLength={filteredMeals.length}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        loader={<h4 className='text-center merienda text-orange-500'>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <p className='text-center merienda text-orange-500 my-2'>Yay! You have seen it all</p >
-          </p>
-        }
-      >
-        <div className="grid grid-cols-1 gap-3 m-5">
-          {filteredMeals.map((meal, index) => (
-            <AllMeal meal={meal} key={index}></AllMeal>
-          ))}
-        </div>
-      </InfiniteScroll>
+
+      {filteredMeals.length === 0 && <p className='text-center merienda text-orange-500'>No meals found.</p>}
+
+      {filteredMeals.length > 0 && (
+        <InfiniteScroll
+          dataLength={filteredMeals.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<h4 className='text-center merienda text-orange-500'>Loading...</h4>}
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <p className='text-center merienda text-orange-500 my-2'>Congrats! you have seen all meals</p>
+            </p>
+          }
+        >
+          <div className="grid grid-cols-1 gap-3 m-5">
+            {filteredMeals.map((meal, index) => (
+              <AllMeal meal={meal} key={index}></AllMeal>
+            ))}
+          </div>
+        </InfiniteScroll>
+      )}
     </div>
   );
 };
