@@ -32,10 +32,10 @@ const NavBar = () => {
         };
     }, []);
     return (
-        <div className="navbar  bg-yellow-400 shadow-2xl sticky text-black">
+        <div className="navbar  bg-yellow-400 shadow-2xl  text-black">
             <div className="dropdown lg:hidden " ref={menuRef}>
                 <Hamburger color="#FFA500" size={25} tabIndex={0} toggled={isOpen} toggle={toggleMenu} />
-                <ul tabIndex={0} className={`menu menu-sm dropdown-content mt-3 z-[1] p-2 text-orange-500 shadow bg-base-100 rounded-box w-52 ${isOpen ? 'block' : 'hidden'} `}>
+                <ul tabIndex={0} className={`menu menu-sm dropdown-content mt-3 z-20 p-2 text-orange-500 shadow bg-base-100 rounded-box w-52 ${isOpen ? 'block' : 'hidden'} `}>
                     {links}
                 </ul>
             </div>
