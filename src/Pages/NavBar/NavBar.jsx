@@ -2,14 +2,22 @@ import { Link } from "react-router-dom";
 import { IoIosNotifications } from "react-icons/io";
 import { Squeeze as Hamburger } from 'hamburger-react'
 import { useEffect, useRef, useState } from "react";
+import useRequestMeals from "../../components/hooks/useRequestMeals";
 const NavBar = () => {
     const [isOpen, setOpen] = useState(false)
     const menuRef = useRef(null);
+    const [requestMeals] = useRequestMeals()
     const links =
         <>
             <li><Link>Home</Link></li>
             <li><Link to={'/mealsSection'}>Meals</Link></li>
             <li><Link>Upcoming Meals</Link></li>
+            <li><Link>
+                <div className="relative">
+                    <IoIosNotifications className="text-2xl text-orange-500 "></IoIosNotifications>
+                    <p className=" text-orange-500 w-4 h-4 text-center  text-xs absolute -top-0 -right-2">{requestMeals.length}</p>
+                </div>
+            </Link></li>
 
 
         </>
@@ -48,7 +56,7 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className="navbar-end gap-5">
-                <IoIosNotifications className="text-2xl text-orange-500 "></IoIosNotifications>
+
                 <a className="btn btn-ghost merienda font-bold">Join Us</a>
             </div>
         </div>

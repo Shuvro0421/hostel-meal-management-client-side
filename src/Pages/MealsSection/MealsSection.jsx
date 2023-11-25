@@ -1,63 +1,106 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useMeals from '../../components/hooks/useMeals';
 import AllMeal from '../Meals/AllMeal';
 
 const MealsSection = () => {
-  const [page, setPage] = useState(1); // Track the current page
-  const [meals, hasMore] = useMeals(page); // Assuming useMeals takes a page parameter
-  const [searchTerm, setSearchTerm] = useState('');
+    const [page, setPage] = useState(1); // Track the current page
+    const [meals, hasMore] = useMeals(page); // Assuming useMeals takes a page parameter
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedMealType, setSelectedMealType] = useState(''); // New state for selected meal type
+    const [selectedPrice, setSelectedPrice] = useState(''); // New state for selected price range
 
-  // Filter meals based on the mealTitle
-  const filteredMeals = meals.filter((meal) =>
-    meal.mealTitle.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    // Filter meals based on the mealTitle, mealType, and price
+    const filteredMeals = meals.filter((meal) => {
+        const mealTypeMatches = selectedMealType ? meal.mealType === selectedMealType : true;
 
-  const fetchMoreData = () => {
-    // Increment the page to fetch the next set of data
-    setPage(page + 1);
-  };
+        let priceRangeMatches = true;
+        if (selectedPrice) {
+            const [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
+            priceRangeMatches = meal.price >= minPrice && meal.price <= maxPrice;
+        }
 
-  useEffect(() => {
-    // Reset the page to 1 when the search term changes
-    setPage(1);
-  }, [searchTerm]);
+        return (
+            meal.mealTitle.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            mealTypeMatches &&
+            priceRangeMatches
+        );
+    });
 
-  return (
-    <div>
-      <div className="flex items-center justify-center w-full">
-        <input
-          type="text"
-          placeholder="Find your meal...."
-          className="input my-5 md:mx-0 mx-3 text-yellow-400 placeholder-yellow-400 input-bordered bg-transparent input-warning w-full max-w-xs"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+    const fetchMoreData = () => {
+        // Increment the page to fetch the next set of data
+        setPage(page + 1);
+    };
 
-      {filteredMeals.length === 0 && <p className='text-center merienda text-orange-500'>No meals found.</p>}
+    useEffect(() => {
+        // Reset the page to 1 when the search term, mealType, or price changes
+        setPage(1);
+    }, [searchTerm, selectedMealType, selectedPrice]);
 
-      {filteredMeals.length > 0 && (
-        <InfiniteScroll
-          dataLength={filteredMeals.length}
-          next={fetchMoreData}
-          hasMore={hasMore}
-          loader={<h4 className='text-center merienda text-orange-500'>Loading...</h4>}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <p className='text-center merienda text-orange-500 my-2'>Congrats! you have seen all meals</p>
-            </p>
-          }
-        >
-          <div className="grid grid-cols-1 gap-3 m-5">
-            {filteredMeals.map((meal, index) => (
-              <AllMeal meal={meal} key={index}></AllMeal>
-            ))}
-          </div>
-        </InfiniteScroll>
-      )}
-    </div>
-  );
+    return (
+        <div>
+            <Helmet>
+                <title>Meal Management | All Meals</title>
+            </Helmet>
+            <div className="flex md:flex-row flex-col items-center justify-center w-full">
+                <input
+                    type="text"
+                    placeholder="Find your meal...."
+                    className="input my-5 md:mx-0 mx-3 text-yellow-400 placeholder-yellow-400 input-bordered bg-transparent input-warning w-full max-w-xs"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <div className='flex'>
+                    {/* Dropdown for mealType */}
+                    <select
+                        value={selectedMealType}
+                        onChange={(e) => setSelectedMealType(e.target.value)}
+                        className="mx-3 text-yellow-400 bg-transparent border-b-2 border-yellow-400"
+                    >
+                        <option value="">All Meal Types</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                    </select>
+
+                    {/* Dropdown for price */}
+                    <select
+                        value={selectedPrice}
+                        onChange={(e) => setSelectedPrice(e.target.value)}
+                        className="mx-3 text-yellow-400 bg-transparent border-b-2 border-yellow-400"
+                    >
+                        <option value="">All Prices</option>
+                        <option value="0-5">0$ - 5$</option>
+                        <option value="5-10">5$ - 10$</option>
+                        <option value="10-12">10$ - 12$</option>
+                    </select>
+                </div>
+            </div>
+
+            {filteredMeals.length === 0 && <p className='text-center merienda text-orange-500'>No meals found.</p>}
+
+            {filteredMeals.length > 0 && (
+                <InfiniteScroll
+                    dataLength={filteredMeals.length}
+                    next={fetchMoreData}
+                    hasMore={hasMore}
+                    loader={<h4 className='text-center merienda text-orange-500'>Loading...</h4>}
+                    endMessage={
+                        <p style={{ textAlign: 'center' }}>
+                            <p className='text-center merienda text-orange-500 my-2'>Congrats! you have seen all meals</p>
+                        </p>
+                    }
+                >
+                    <div className="grid grid-cols-1 gap-3 m-5">
+                        {filteredMeals.map((meal, index) => (
+                            <AllMeal meal={meal} key={index}></AllMeal>
+                        ))}
+                    </div>
+                </InfiniteScroll>
+            )}
+        </div>
+    );
 };
 
 export default MealsSection;
