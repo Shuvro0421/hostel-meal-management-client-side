@@ -14,7 +14,8 @@ const MealDetails = () => {
     const [, refetch] = useRequestMeals()
     const [success, setSuccess] = useState('')
     const [reviews] = useReviews()
-    
+
+
     const {
         mealTitle,
         mealImage,
@@ -25,7 +26,8 @@ const MealDetails = () => {
         time,
         rating,
         _id,
-     
+        likes
+
 
     } = useLoaderData();
 
@@ -39,26 +41,26 @@ const MealDetails = () => {
 
 
     useEffect(() => {
+        // Retrieve like state from localStorage when component mounts
         const isLiked = localStorage.getItem(`like_${_id}`);
-        setIsClicked(isLiked === "true");
+        setIsClicked(isLiked === 'true');
     }, [_id]);
 
     const handleIsClicked = async () => {
         try {
-            console.log("Before: isClicked", isClicked);
-
             // Use the functional form of setState to update based on the previous state
             await axiosPublic.put(`/meals/${_id}`);
             setIsClicked((prevIsClicked) => !prevIsClicked);
 
-            // Save the like state in localStorage
+            // Save the updated like state in localStorage
             localStorage.setItem(`like_${_id}`, String(!isClicked));
-
-            console.log("After: isClicked", isClicked);
         } catch (error) {
-            console.error("Error updating likes:", error.message);
+            console.error('Error updating likes:', error.message);
         }
     };
+
+
+
 
     const axiosPublic = useAxiosPublic()
 
@@ -81,9 +83,6 @@ const MealDetails = () => {
                         timer: 1500
                     });
                 }
-                // refetch the cart
-                refetch();
-                console.log('Refetch completed'); // Add this log
             });
             // Optionally, you can update the UI or show a success message here
         } catch (error) {
@@ -168,7 +167,7 @@ const MealDetails = () => {
                                 Rating: {rating}/5
                             </p>
                             <div className="flex justify-center items-center gap-2">
-                                <button onClick={handleIsClicked} className="btn">
+                                <button onClick={handleIsClicked} className="btn ">
                                     {isClicked ? (
                                         <>
                                             <IoFastFood className="text-2xl text-orange-500" />
@@ -181,6 +180,7 @@ const MealDetails = () => {
                                         </>
                                     )}
                                 </button>
+                                <p className="text-orange-500 font-semibold">liked by: {likes} people</p>
                             </div>
 
                             <button
@@ -198,19 +198,22 @@ const MealDetails = () => {
                     <HeaderTitles heading={'Reviews'}></HeaderTitles>
                 </div>
                 <div className="h-72 overflow-auto border-2 m-2 thin-scrollbar">
-                    {
-                        reviews
-                            .filter(review => review.mealTitle === mealTitle) // Replace 'desiredMealTitle' with the meal title you want to filter
-                            .map(review => (
-                                <div key={review._id}>
-                                    <div className="border border-orange-500  my-2 m-3 p-3 rounded-lg text-center">
-                                        <h1 >{review.reviews}</h1>
-                                        <h1 className="text-left merienda text-xs text-orange-500">~{review.distributorName}</h1>
-                                    </div>
+                    {reviews
+                        .filter(review => review.mealTitle === mealTitle)
+                        .map(review => (
+                            <div key={review._id}>
+                                <div className="border border-orange-500 my-2 m-3 p-3 rounded-lg text-center">
+                                    <h1>{review.reviews}</h1>
+                                    <h1 className="text-left merienda text-xs text-orange-500">~{review.distributorName}</h1>
                                 </div>
-                            ))
-                    }
+                            </div>
+                        ))}
+
+                    {reviews.filter(review => review.mealTitle === mealTitle).length === 0 && (
+                        <div className="text-center text-orange-400">No reviews available.</div>
+                    )}
                 </div>
+
 
             </div>
             <div>
