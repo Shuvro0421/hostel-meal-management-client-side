@@ -1,24 +1,22 @@
 
 
-// import { useEffect, useState } from "react";
+// api, axios (axios secure), tan stack 
 
 import { useQuery } from "@tanstack/react-query";
-import useAxiosPublic from "./useAxiosPublic";
-
-
-
+import useAxiosSecure from "./useAxiosSecure";
+import useAuth from "./useAuth";
 const useRequestMeals = () => {
-    const axiosPublic = useAxiosPublic();
-    const {data: requestMeals = [], isPending: loading, refetch} = useQuery({
-        queryKey: ['requestMeals'], 
-        queryFn: async() =>{
-            const res = await axiosPublic.get('/requestMeals');
+    const axiosSecure = useAxiosSecure();
+    const { user} = useAuth();
+    const { refetch, data: requestMeals = [] } = useQuery({
+        queryKey: ['requestMeals', user?.email],
+        queryFn: async() => {
+            const res = await axiosSecure.get(`/requestMeals?email=${user?.email}`);
             return res.data;
         }
     })
 
-
-    return [requestMeals, loading, refetch]
-}
+    return [requestMeals, refetch]
+};
 
 export default useRequestMeals;

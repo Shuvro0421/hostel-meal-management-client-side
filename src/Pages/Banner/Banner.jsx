@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TextTransition, { presets } from 'react-text-transition';
 import HeaderTitles from '../HeaderTitles/HeaderTitles';
+import Packages from '../Packages/Packages';
 import TabsComponent from '../Tab/TabsComponent';
 
 
@@ -63,6 +64,10 @@ const Banner = () => {
             {/* tab start */}
             <TabsComponent></TabsComponent>
             {/* tab end */}
+            {/* package start */}
+            <HeaderTitles heading={'Our Packages'}></HeaderTitles>
+            <Packages></Packages>
+            {/* package end */}
         </div>
     );
 };

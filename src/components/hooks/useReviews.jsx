@@ -1,24 +1,21 @@
-
-
-// import { useEffect, useState } from "react";
+// api, axios (axios secure), tan stack 
 
 import { useQuery } from "@tanstack/react-query";
-import useAxiosPublic from "./useAxiosPublic";
-
-
+import useAxiosSecure from "./useAxiosSecure";
+import useAuth from "./useAuth";
 
 const useReviews = () => {
-    const axiosPublic = useAxiosPublic();
-    const {data: reviews = [], isPending: loading, refetch} = useQuery({
-        queryKey: ['reviews'], 
-        queryFn: async() =>{
-            const res = await axiosPublic.get('/reviews');
+    const axiosSecure = useAxiosSecure();
+    const { user} = useAuth();
+    const { refetch, data: reviews = [] } = useQuery({
+        queryKey: ['reviews', user?.email],
+        queryFn: async() => {
+            const res = await axiosSecure.get(`/reviews?email=${user?.email}`);
             return res.data;
         }
     })
 
-
-    return [reviews, loading, refetch]
-}
+    return [reviews, refetch]
+};
 
 export default useReviews;

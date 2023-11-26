@@ -1,11 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import { useLoaderData } from "react-router-dom";
 import { IoFastFood, IoFastFoodOutline } from "react-icons/io5";
-import { useEffect, useState } from "react";
-import useAxiosPublic from "../../components/hooks/useAxiosPublic";
+import { useState } from "react";
+
 import Swal from "sweetalert2";
 import HeaderTitles from "../HeaderTitles/HeaderTitles";
 import useReviews from "../../components/hooks/useReviews";
+import useRequestMeals from "../../components/hooks/useRequestMeals";
+import useAxiosSecure from "../../components/hooks/useAxiosSecure";
+import useAuth from "../../components/hooks/useAuth";
 
 
 
@@ -13,14 +16,18 @@ import useReviews from "../../components/hooks/useReviews";
 const MealDetails = () => {
 
     const [success, setSuccess] = useState('')
-    const [reviews , refetch] = useReviews();
+    const [reviews, refetchAgain] = useReviews();
+    const [, refetch] = useRequestMeals()
+    const { user } = useAuth()
+    const axiosSecure = useAxiosSecure()
+    const [error, setError] = useState('')
+    const [error2, setError2] = useState('')
 
 
     const {
         mealTitle,
         mealImage,
-        distributorName,
-        distributorEmail,
+        name,
         description,
         ingredients,
         time,
@@ -31,51 +38,21 @@ const MealDetails = () => {
 
     } = useLoaderData();
 
-    const ingredientList = ingredients.split(',').map((ingredient, index) => (
+    const ingredientList = ingredients?.split(',')?.map((ingredient, index) => (
         <li key={index} className="font-semibold py-1">
-            {ingredient.trim()}
+            {ingredient?.trim()}
         </li>
     ));
 
-    const [isLiked, setIsLiked] = useState(false);
-
-    useEffect(() => {
-        const hasLiked = localStorage.getItem(`like_${_id}`);
-        setIsLiked(hasLiked === "true");
-    }, [_id]);
-
-    const handleLike = async () => {
-        try {
-            await axiosPublic.put(`/meals/${_id}/like`);
-            setIsLiked(true);
-            localStorage.setItem(`like_${_id}`, "true");
-            // Call refetch after updating the like
-         
-        } catch (error) {
-            console.error("Error updating likes:", error.message);
-        }
-    };
-
-    const handleDislike = async () => {
-        try {
-            await axiosPublic.put(`/meals/${_id}/dislike`);
-            setIsLiked(false);
-            localStorage.setItem(`like_${_id}`, "false");
-        } catch (error) {
-            console.error("Error updating dislikes:", error.message);
-        }
-    };
-
-
-    const axiosPublic = useAxiosPublic()
-
     const handleRequestMeals = async () => {
-        try {
-            await axiosPublic.post("/requestMeals", {
+        setError('')
+        if (user && user.email) {
+            await axiosSecure.post("/requestMeals", {
                 mealTitle,
                 mealImage,
-                distributorName,
-                distributorEmail,
+                name: user.displayName,
+                email: user.email,
+                mealId: _id
                 // Add other data you want to send with the request
             }).then(res => {
                 console.log(res.data);
@@ -87,24 +64,27 @@ const MealDetails = () => {
                         showConfirmButton: false,
                         timer: 1500
                     });
+
                 }
+                refetch()
             });
-            // Optionally, you can update the UI or show a success message here
-        } catch (error) {
-            console.error("Error requesting meal:", error.message);
-            // Handle the error, display a user-friendly message, or log it as needed
         }
-    };
-    const handleReviews = (e) => {
+        else {
+            setError('Need to login first')
+        }
+        // Optionally, you can update the UI or show a success message here
+    }
+
+    const handleReviews = async (e) => {
         e.preventDefault()
         const form = e.target
         const reviews = form.reviews.value
-
-        try {
-            setSuccess('')
-            axiosPublic.post(`/reviews`, {
-                distributorName,
-                distributorEmail,
+        setSuccess('')
+        setError('')
+        if (user && user.email) {
+            await axiosSecure.post(`/reviews`, {
+                name: user.displayName,
+                email: user.email,
                 reviews,
                 mealTitle
                 // Add other data you want to send with the request
@@ -113,16 +93,16 @@ const MealDetails = () => {
                 if (res.data.insertedId) {
                     setSuccess('Reviewed this meal!')
                     form.reset()
-                    refetch()
-                    
                 }
-              
+                refetchAgain()
+
             })
-            // Optionally, you can update the UI or show a success message here
-        } catch (error) {
-            console.error("Error requesting meal:", error.message);
-            // Handle the error, display a user-friendly message, or log it as needed
         }
+        else {
+            setError2('Need to login first')
+        }
+        // Optionally, you can update the UI or show a success message here
+
     };
 
     return (
@@ -146,7 +126,7 @@ const MealDetails = () => {
                                 <span className="text-orange-500">
                                     Added by:{" "}
                                 </span>
-                                {distributorName}
+                                {name}
                             </p>
                             <p className="py-3 font-semibold">
                                 <span className="text-orange-500">
@@ -173,31 +153,36 @@ const MealDetails = () => {
                             <p className="merienda text-orange-500">
                                 Rating: {rating}/5
                             </p>
-                            <div className="flex justify-center items-center gap-2">
-                                {
-                                    isLiked ?
-                                        <button onClick={handleDislike} className="btn ">
-                                            <>
-                                                <IoFastFood className="text-2xl text-orange-500" />
-                                                Unlike
-                                            </>
-                                        </button>
-                                        :
-                                        <button onClick={handleLike} className="btn ">
-                                            <>
-                                                <IoFastFoodOutline className="text-2xl text-orange-500" />
-                                                Like
-                                            </>
-                                        </button>
-                                }
-                                <p className="text-orange-500 font-semibold">liked by: {likes} people</p>
+                            <div>
+                                <div className="flex justify-center items-center gap-2">
+
+
+                                    <button className="btn ">
+                                        <>
+                                            <IoFastFood className="text-2xl text-orange-500" />
+                                            Unlike
+                                        </>
+                                    </button>
+                                    :
+                                    <button className="btn ">
+                                        <>
+                                            <IoFastFoodOutline className="text-2xl text-orange-500" />
+                                            Like
+                                        </>
+                                    </button>
+
+                                    <p className="text-orange-500 font-semibold">liked by: {likes} people</p>
+                                </div>
                             </div>
-                            <button
-                                onClick={handleRequestMeals}
-                                className="btn btn-outline border-orange-500 hover:bg-orange-500 border-2 hover:border-orange-500 text-orange-500 hover:text-black merienda"
-                            >
-                                Request this meal
-                            </button>
+                            <div className="flex flex-col">
+                                <button
+                                    onClick={handleRequestMeals}
+                                    className="btn btn-outline border-orange-500 hover:bg-orange-500 border-2 hover:border-orange-500 text-orange-500 hover:text-black merienda"
+                                >
+                                    Request this meal
+                                </button>
+                                <p className='text-orange-500 text-sm font-semibold text-left'>{error}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -213,7 +198,7 @@ const MealDetails = () => {
                             <div key={review._id}>
                                 <div className="border border-orange-500 my-2 m-3 p-3 rounded-lg text-center">
                                     <h1>{review.reviews}</h1>
-                                    <h1 className="text-left merienda text-xs text-orange-500">~{review.distributorName}</h1>
+                                    <h1 className="text-left merienda text-xs text-orange-500">~{review.name}</h1>
                                 </div>
                             </div>
                         ))}
@@ -233,6 +218,7 @@ const MealDetails = () => {
                     <form onSubmit={handleReviews}>
                         <textarea name="reviews" className="textarea textarea-bordered w-full" placeholder="your review"></textarea>
                         <p className='text-yellow-400 text-sm font-semibold text-left'>{success}</p>
+                        <p className='text-yellow-400 text-sm font-semibold text-left'>{error2}</p>
                         <input type="submit" className='btn btn-outline hover:bg-yellow-400 hover:border-yellow-400 text-yellow-400 font-semibold hover:text-black merienda normal-case w-full' value="Submit review" />
                     </form>
                 </div>

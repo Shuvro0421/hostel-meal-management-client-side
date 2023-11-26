@@ -7,26 +7,27 @@ const TabsComponent = () => {
 
     return (
         <div>
-            <Tabs className={'text-orange-400 font-semibold md:m-5 m-2 p-2 md:p-5 rounded-lg'}>
+            <Tabs className={'text-orange-400  font-semibold md:m-5 m-2 p-2 md:p-5 rounded-lg'}>
                 <TabList>
                     <Tab>All Meals</Tab>
                     <Tab>BreakFast</Tab>
                     <Tab>Lunch</Tab>
                     <Tab>Dinner</Tab>
                 </TabList>
-
-                <TabPanel>
-                    <AllMeals></AllMeals>
-                </TabPanel>
-                <TabPanel>
-                    <Meals category={'breakfast'}></Meals>
-                </TabPanel>
-                <TabPanel>
-                    <Meals category={'lunch'}></Meals>
-                </TabPanel>
-                <TabPanel>
-                    <Meals category={'dinner'}></Meals>
-                </TabPanel>
+                <div className='h-96 thin-scrollbar overflow-auto'>
+                    <TabPanel>
+                        <AllMeals></AllMeals>
+                    </TabPanel>
+                    <TabPanel>
+                        <Meals category={'breakfast'}></Meals>
+                    </TabPanel>
+                    <TabPanel>
+                        <Meals category={'lunch'}></Meals>
+                    </TabPanel>
+                    <TabPanel>
+                        <Meals category={'dinner'}></Meals>
+                    </TabPanel>
+                </div>
             </Tabs>
         </div>
     );
