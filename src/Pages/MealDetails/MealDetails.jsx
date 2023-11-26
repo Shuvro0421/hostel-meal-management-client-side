@@ -3,17 +3,17 @@ import { useLoaderData } from "react-router-dom";
 import { IoFastFood, IoFastFoodOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import useAxiosPublic from "../../components/hooks/useAxiosPublic";
-import useRequestMeals from "../../components/hooks/useRequestMeals";
 import Swal from "sweetalert2";
 import HeaderTitles from "../HeaderTitles/HeaderTitles";
 import useReviews from "../../components/hooks/useReviews";
 
 
 
+
 const MealDetails = () => {
-    const [, refetch] = useRequestMeals()
+
     const [success, setSuccess] = useState('')
-    const [reviews] = useReviews()
+    const [reviews , refetch] = useReviews();
 
 
     const {
@@ -37,29 +37,34 @@ const MealDetails = () => {
         </li>
     ));
 
-    const [isClicked, setIsClicked] = useState(false);
-
+    const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
-        // Retrieve like state from localStorage when component mounts
-        const isLiked = localStorage.getItem(`like_${_id}`);
-        setIsClicked(isLiked === 'true');
+        const hasLiked = localStorage.getItem(`like_${_id}`);
+        setIsLiked(hasLiked === "true");
     }, [_id]);
 
-    const handleIsClicked = async () => {
+    const handleLike = async () => {
         try {
-            // Use the functional form of setState to update based on the previous state
-            await axiosPublic.put(`/meals/${_id}`);
-            setIsClicked((prevIsClicked) => !prevIsClicked);
-
-            // Save the updated like state in localStorage
-            localStorage.setItem(`like_${_id}`, String(!isClicked));
+            await axiosPublic.put(`/meals/${_id}/like`);
+            setIsLiked(true);
+            localStorage.setItem(`like_${_id}`, "true");
+            // Call refetch after updating the like
+         
         } catch (error) {
-            console.error('Error updating likes:', error.message);
+            console.error("Error updating likes:", error.message);
         }
     };
 
-
+    const handleDislike = async () => {
+        try {
+            await axiosPublic.put(`/meals/${_id}/dislike`);
+            setIsLiked(false);
+            localStorage.setItem(`like_${_id}`, "false");
+        } catch (error) {
+            console.error("Error updating dislikes:", error.message);
+        }
+    };
 
 
     const axiosPublic = useAxiosPublic()
@@ -108,8 +113,10 @@ const MealDetails = () => {
                 if (res.data.insertedId) {
                     setSuccess('Reviewed this meal!')
                     form.reset()
+                    refetch()
+                    
                 }
-                refetch()
+              
             })
             // Optionally, you can update the UI or show a success message here
         } catch (error) {
@@ -167,22 +174,24 @@ const MealDetails = () => {
                                 Rating: {rating}/5
                             </p>
                             <div className="flex justify-center items-center gap-2">
-                                <button onClick={handleIsClicked} className="btn ">
-                                    {isClicked ? (
-                                        <>
-                                            <IoFastFood className="text-2xl text-orange-500" />
-                                            Unlike
-                                        </>
-                                    ) : (
-                                        <>
-                                            <IoFastFoodOutline className="text-2xl text-orange-500" />
-                                            Like
-                                        </>
-                                    )}
-                                </button>
+                                {
+                                    isLiked ?
+                                        <button onClick={handleDislike} className="btn ">
+                                            <>
+                                                <IoFastFood className="text-2xl text-orange-500" />
+                                                Unlike
+                                            </>
+                                        </button>
+                                        :
+                                        <button onClick={handleLike} className="btn ">
+                                            <>
+                                                <IoFastFoodOutline className="text-2xl text-orange-500" />
+                                                Like
+                                            </>
+                                        </button>
+                                }
                                 <p className="text-orange-500 font-semibold">liked by: {likes} people</p>
                             </div>
-
                             <button
                                 onClick={handleRequestMeals}
                                 className="btn btn-outline border-orange-500 hover:bg-orange-500 border-2 hover:border-orange-500 text-orange-500 hover:text-black merienda"
