@@ -3,18 +3,18 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
 import useAxiosSecure from "./useAxiosSecure";
 
-const useMeals = () => {
+const usePackages = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
-    const { refetch, data: meals = [] } = useQuery({
-        queryKey: ['meals', user?.email],
+    const { refetch, data: packages = [] } = useQuery({
+        queryKey: ['packages', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/meals?email=${user?.email}`);
+            const res = await axiosSecure.get(`/packages?email=${user?.email}`);
             return res.data;
         }
     })
 
-    return [meals, refetch]
+    return [packages, refetch]
 };
 
-export default useMeals;
+export default usePackages;

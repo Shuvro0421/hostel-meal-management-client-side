@@ -39,7 +39,12 @@ const NavBar = () => {
                 <li className="my-10 text-center text-2xl merienda">{user?.displayName || isAdmin?.displayName}</li>
                 <li><Link>Home</Link></li>
                 <li><Link to={'/mealsSection'}>Meals</Link></li>
-                <li><Link>Upcoming Meals</Link></li>
+                {
+                    user && isAdmin && <li><Link to="/dashboard/adminProfile">Dashboard</Link></li>
+                }
+                {
+                    user && !isAdmin && <li><Link to="/dashboard/myProfile">Dashboard</Link></li>
+                }
             </div>
             <li onClick={handleLogOut} className="btn btn-outline btn-error">Logout</li>
         </>
@@ -84,7 +89,7 @@ const NavBar = () => {
                                 <div className="drawer-content">
                                     {/* Page content here */}
                                     <label htmlFor="my-drawer-4" className="drawer-button btn btn-ghost hover:bg-transparent">
-                                        <img className="w-10 border-4 border-orange-500 rounded-full" src={user?.photoURL || isAdmin?.photoURL} alt="" />
+                                        <img className="w-10 h-10 border-4 border-orange-500 rounded-full" src={user?.photoURL || isAdmin?.photoURL} alt="" />
                                     </label>
                                 </div>
                                 <div className="drawer-side">

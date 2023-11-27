@@ -58,11 +58,11 @@ const MealDetails = () => {
                 console.log(res.data);
                 if (res.data.insertedId) {
                     Swal.fire({
-                        position: "top-end",
+                        position: "center",
                         icon: "success",
                         title: `Request has been added`,
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500, 
                     });
 
                 }
