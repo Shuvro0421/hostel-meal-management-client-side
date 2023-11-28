@@ -35,7 +35,8 @@ const MealDetails = () => {
         time,
         rating,
         _id,
-        likes
+        likes,
+        price
 
 
     } = useLoaderData();
@@ -65,7 +66,9 @@ const MealDetails = () => {
                 mealImage,
                 name: user.displayName,
                 email: user.email,
-                mealId: _id
+                mealId: _id,
+                price
+                
                 // Add other data you want to send with the request
             }).then(res => {
                 console.log(res.data);

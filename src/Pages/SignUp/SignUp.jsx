@@ -34,7 +34,7 @@ const SignUp = () => {
                                     console.log('user added to the database')
                                     reset();
                                     Swal.fire({
-                                        position: 'top-end',
+                                        position: 'center',
                                         icon: 'success',
                                         title: 'User created successfully.',
                                         showConfirmButton: false,

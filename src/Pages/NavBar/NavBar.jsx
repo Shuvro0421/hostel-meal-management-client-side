@@ -24,7 +24,7 @@ const NavBar = () => {
             <li><Link>Home</Link></li>
             <li><Link to={'/mealsSection'}>Meals</Link></li>
             <li><Link>Upcoming Meals</Link></li>
-            <li><Link>
+            <li><Link to={'/dashboard/requestedMeals'}>
                 <div className="relative">
                     <IoIosNotifications className="text-2xl text-orange-500 "></IoIosNotifications>
                     <p className=" text-orange-500 w-4 h-4 text-center  text-xs absolute -top-0 -right-2">{requestMeals.length}</p>

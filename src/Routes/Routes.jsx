@@ -3,8 +3,12 @@ import {
 } from "react-router-dom";
 import Dashboard from "../Layout/Dashborad";
 import Banner from "../Pages/Banner/Banner";
+import AddMeals from "../Pages/Dashboard/AddMeals/AddMeals";
+import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
+import ManageUsers from "../Pages/Dashboard/ManageUsers/ManageUsers";
 import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
 import MyReviews from "../Pages/Dashboard/myReviews/myReviews";
+import PaymentHistory from "../Pages/Dashboard/PaymentHistory/PaymentHistory";
 import RequestedMeals from "../Pages/Dashboard/RequestedMeals/RequestedMeals";
 import Login from "../Pages/Login/Login";
 import Main from "../Pages/Main/Main";
@@ -44,6 +48,7 @@ export const router = createBrowserRouter([
         element: <MealsSection></MealsSection>
       },
 
+
     ]
   },
   {
@@ -67,12 +72,24 @@ export const router = createBrowserRouter([
         path: 'packagePayment/:id',
         element: <PrivateRoute><PackagePayment></PackagePayment></PrivateRoute>
       },
+      {
+        path: "paymentHistory",
+        element: <PaymentHistory></PaymentHistory>
+      },
 
       // admin routes
       {
         path: 'adminProfile',
-        element: <AdminRoute><MyReviews></MyReviews></AdminRoute>
+        element: <AdminRoute><AdminProfile></AdminProfile></AdminRoute>
       },
+      {
+        path: 'manageUsers',
+        element: <AdminRoute><ManageUsers></ManageUsers></AdminRoute>
+      },
+      {
+        path: 'addMeals',
+        element: <AdminRoute><AddMeals></AddMeals></AdminRoute>
+      }
 
     ]
   }

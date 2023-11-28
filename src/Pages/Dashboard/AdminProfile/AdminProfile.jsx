@@ -1,7 +1,9 @@
+import HeaderTitles from "../../HeaderTitles/HeaderTitles";
+
 const AdminProfile = () => {
     return (
         <div>
-            <h1>admin profile</h1>
+            <HeaderTitles heading={'Admin Profile'}></HeaderTitles>
         </div>
     );
 };

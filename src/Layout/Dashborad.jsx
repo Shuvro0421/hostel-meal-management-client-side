@@ -1,13 +1,13 @@
-import { FaBook, FaHome, FaList, FaUsers, FaUtensils } from "react-icons/fa";
-import { IoFastFood, IoMenu, IoNewspaper, IoPeople } from "react-icons/io5";
+import { FaBook, FaCrown, FaHandHolding, FaHome,  FaList,  FaPlus,  FaUsers, FaUtensils} from "react-icons/fa";
+import {  IoFastFood, IoMenu, IoNewspaper, IoPeople } from "react-icons/io5";
 import { NavLink, Outlet } from "react-router-dom";
 import useAdmin from "../components/hooks/useAdmin";
-import useMeals from "../components/hooks/useMeals";
+import useRequestMeals from "../components/hooks/useRequestMeals";
 
 
 
 const Dashboard = () => {
-    const [meals] = useMeals();
+    const [requestedMeals] = useRequestMeals()
 
     // TODO: get isAdmin value from the database
     const [isAdmin] = useAdmin();
@@ -16,29 +16,44 @@ const Dashboard = () => {
             {
                 isAdmin ? <>
                     <li>
-                        <NavLink to="/dashboard/adminHome">
+                        <NavLink to="/">
                             <FaHome></FaHome>
-                            Admin Home</NavLink>
+                            Home</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/dashboard/addItems">
-                            <FaUtensils></FaUtensils>
-                            Add Items</NavLink>
+                        <NavLink to="/dashboard/adminProfile">
+                            <FaCrown></FaCrown>
+                            Admin Profile</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/manageUsers">
+                            <FaUsers></FaUsers>
+                            Manage Users</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/addMeals">
+                            <FaPlus></FaPlus>
+                            Add Meals</NavLink>
                     </li>
                     <li>
                         <NavLink to="/dashboard/manageItems">
-                            <FaList></FaList>
-                            Manage Items</NavLink>
+                            <IoFastFood></IoFastFood>
+                            All Meals</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/dashboard/bookings">
+                        <NavLink to="/dashboard/manageItems">
                             <FaBook></FaBook>
-                            Manage Bookings</NavLink>
+                            All Reviews</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/dashboard/users">
-                            <FaUsers></FaUsers>
-                            All Users</NavLink>
+                        <NavLink to="/dashboard/manageItems">
+                            <FaHandHolding></FaHandHolding>
+                            Serve Meals</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/manageItems">
+                            <FaUtensils></FaUtensils>
+                            Upcoming Meals</NavLink>
                     </li>
                 </>
                     :
@@ -56,12 +71,17 @@ const Dashboard = () => {
                         <li>
                             <NavLink to="/dashboard/requestedMeals">
                                 <IoFastFood></IoFastFood>
-                                Requested Meals ({meals.length})</NavLink>
+                                Requested Meals ({requestedMeals.length})</NavLink>
                         </li>
                         <li>
                             <NavLink to="/dashboard/myReviews">
                                 <IoNewspaper></IoNewspaper>
                                 My Reviews</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/dashboard/paymentHistory">
+                                <FaList></FaList>
+                                Payment History</NavLink>
                         </li>
                     </>
             }
@@ -85,7 +105,7 @@ const Dashboard = () => {
             </div>
             <div className="lg:flex hidden">
                 {/* dashboard side bar */}
-                <div className="w-64 min-h-screen bg-yellow-400">
+                <div className="w-64 min-h-screen  bg-yellow-400">
                     <ul className="menu text-orange-500 p-4">
                         {links}
                     </ul>
