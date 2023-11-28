@@ -1,10 +1,10 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 import useAxiosSecure from "../../components/hooks/useAxiosSecure";
 import useAuth from "../../components/hooks/useAuth";
 import usePackages from "../../components/hooks/usePackages";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const PackageCheckOut = ({ packageBox }) => {
     const { price, packageName } = packageBox
@@ -17,8 +17,9 @@ const PackageCheckOut = ({ packageBox }) => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
     const [packages, refetch] = usePackages();
-    const navigate = useNavigate();
-
+    const [success , setSuccess] = useState('')
+    const navigate = useNavigate()
+   
     useEffect(() => {
         if (price > 0) {
             axiosSecure.post('/create-package-payment-intent', { price })
@@ -84,23 +85,27 @@ const PackageCheckOut = ({ packageBox }) => {
                     transactionId: paymentIntent.id,
                     date: new Date(), // utc date convert. use moment js to 
                     packageName,
-                    packagesIds : packages.map(item => item._id),
-                    status: 'pending'
+                    packagesIds: packages.map(item => item._id),
+                    status: 'done'
+
                 }
+                console.log(payment)
 
                 const res = await axiosSecure.post('/packagePayments', payment);
                 console.log('payment saved', res.data);
                 refetch();
-                if (res.data?.paymentResult?.insertedId) {
+                setSuccess('')
+                if (res.data?.insertedId) {
                     Swal.fire({
                         position: "center",
                         icon: "success",
-                        title: "Thank you for your payment",
+                        title: `Payment done`,
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500, 
                     });
-                    navigate('/')
                 }
+                navigate('/')
+                
 
             }
         }
@@ -130,6 +135,7 @@ const PackageCheckOut = ({ packageBox }) => {
             </button>
             <p className="text-red-600">{error}</p>
             {transactionId && <p className="text-green-600"> Your transaction id: {transactionId}</p>}
+            <p className="text-green-600">{success}</p>
         </form>
     );
 };

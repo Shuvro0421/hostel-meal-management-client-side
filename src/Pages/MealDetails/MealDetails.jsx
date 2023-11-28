@@ -9,6 +9,8 @@ import useReviews from "../../components/hooks/useReviews";
 import useRequestMeals from "../../components/hooks/useRequestMeals";
 import useAxiosSecure from "../../components/hooks/useAxiosSecure";
 import useAuth from "../../components/hooks/useAuth";
+import { useEffect } from "react";
+
 
 
 
@@ -22,8 +24,8 @@ const MealDetails = () => {
     const axiosSecure = useAxiosSecure()
     const [error, setError] = useState('')
     const [error2, setError2] = useState('')
-
-
+    const [premiumUser, setPremiumUser] = useState([])
+    const [normalUser, setNormalUSer] = useState([])
     const {
         mealTitle,
         mealImage,
@@ -37,6 +39,17 @@ const MealDetails = () => {
 
 
     } = useLoaderData();
+
+    useEffect(() => {
+        fetch('http://localhost:5000/packagePayments')
+            .then(res => res.json())
+            .then(data => setNormalUSer(data))
+    }, [])
+
+    useEffect(() => {
+        const isUserPremium = normalUser.find(normal => normal?.email === user?.email)
+        setPremiumUser(isUserPremium)
+    }, [normalUser, user?.email])
 
     const ingredientList = ingredients?.split(',')?.map((ingredient, index) => (
         <li key={index} className="font-semibold py-1">
@@ -62,7 +75,7 @@ const MealDetails = () => {
                         icon: "success",
                         title: `Request has been added`,
                         showConfirmButton: false,
-                        timer: 1500, 
+                        timer: 1500,
                     });
 
                 }
@@ -175,12 +188,18 @@ const MealDetails = () => {
                                 </div>
                             </div>
                             <div className="flex flex-col">
-                                <button
-                                    onClick={handleRequestMeals}
-                                    className="btn btn-outline border-orange-500 hover:bg-orange-500 border-2 hover:border-orange-500 text-orange-500 hover:text-black merienda"
-                                >
-                                    Request this meal
-                                </button>
+                                {
+                                    premiumUser ?
+                                        <button
+                                            onClick={handleRequestMeals}
+                                            className="btn btn-outline border-orange-500 hover:bg-orange-500 border-2 hover:border-orange-500 text-orange-500 hover:text-black merienda"
+                                        >
+                                            Request this meal
+                                        </button>
+                                        :
+                                        <p className="text-orange-500 font-semibold">Need to buy the package</p>
+                                }
+
                                 <p className='text-orange-500 text-sm font-semibold text-left'>{error}</p>
                             </div>
                         </div>
