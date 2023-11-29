@@ -8,7 +8,7 @@ import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
 import ManageUsers from "../Pages/Dashboard/ManageUsers/ManageUsers";
 import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
 import MyReviews from "../Pages/Dashboard/myReviews/myReviews";
-import PaymentHistory from "../Pages/Dashboard/PaymentHistory/PaymentHistory";
+import Payment from "../Pages/Dashboard/Payment/Payment";
 import RequestedMeals from "../Pages/Dashboard/RequestedMeals/RequestedMeals";
 import Login from "../Pages/Login/Login";
 import Main from "../Pages/Main/Main";
@@ -73,8 +73,8 @@ export const router = createBrowserRouter([
         element: <PrivateRoute><PackagePayment></PackagePayment></PrivateRoute>
       },
       {
-        path: "paymentHistory",
-        element: <PaymentHistory></PaymentHistory>
+        path: 'payment',
+        element: <Payment></Payment>
       },
 
       // admin routes

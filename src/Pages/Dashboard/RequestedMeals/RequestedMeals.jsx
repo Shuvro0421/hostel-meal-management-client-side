@@ -65,6 +65,9 @@ const RequestedMeals = () => {
                             <th>Image</th>
                             <th>Name</th>
                             <th>Price</th>
+                            <th>Status</th>
+                            <th>Likes</th>
+                            <th>Reviews</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -83,10 +86,14 @@ const RequestedMeals = () => {
                                         </div>
                                     </div>
                                 </td>
+                                {/* TODO: Likes and review counts also status  */}
                                 <td>
                                     {item.mealTitle}
                                 </td>
                                 <td>${item.price}</td>
+                                <td>{item.status}</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
                                 <th>
                                     <button
                                         onClick={() => handleDelete(item._id)}

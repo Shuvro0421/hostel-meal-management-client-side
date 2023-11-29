@@ -15,6 +15,7 @@ import { useEffect } from "react";
 
 
 
+
 const MealDetails = () => {
 
     const [success, setSuccess] = useState('')
@@ -26,6 +27,9 @@ const MealDetails = () => {
     const [error2, setError2] = useState('')
     const [premiumUser, setPremiumUser] = useState([])
     const [normalUser, setNormalUSer] = useState([])
+    const [isLiked, setIsLiked] = useState(false)
+
+
     const {
         mealTitle,
         mealImage,
@@ -35,11 +39,15 @@ const MealDetails = () => {
         time,
         rating,
         _id,
-        likes,
-        price
+        price,
+        likes
 
 
     } = useLoaderData();
+
+    const handleClicked = () => {
+        setIsLiked(!isLiked)
+    }
 
     useEffect(() => {
         fetch('http://localhost:5000/packagePayments')
@@ -57,7 +65,6 @@ const MealDetails = () => {
             {ingredient?.trim()}
         </li>
     ));
-
     const handleRequestMeals = async () => {
         setError('')
         if (user && user.email) {
@@ -67,8 +74,11 @@ const MealDetails = () => {
                 name: user.displayName,
                 email: user.email,
                 mealId: _id,
-                price
-                
+                price,
+                status: 'pending',
+
+
+
                 // Add other data you want to send with the request
             }).then(res => {
                 console.log(res.data);
@@ -91,6 +101,20 @@ const MealDetails = () => {
         // Optionally, you can update the UI or show a success message here
     }
 
+    const handleLike = async () => {
+        // Call the endpoint to like the meal
+        await axiosSecure.post(`/meals/like/${_id}`);
+        // Optionally, you can update the UI or show a success message here
+
+    };
+
+    const handleDislike = async () => {
+        // Call the endpoint to dislike the meal
+        await axiosSecure.post(`/meals/dislike/${_id}`);
+        // Optionally, you can update the UI or show a success message here
+
+    };
+
     const handleReviews = async (e) => {
         e.preventDefault()
         const form = e.target
@@ -102,7 +126,8 @@ const MealDetails = () => {
                 name: user.displayName,
                 email: user.email,
                 reviews,
-                mealTitle
+                mealTitle,
+                mealId: _id
                 // Add other data you want to send with the request
             }).then(res => {
                 console.log(res.data)
@@ -170,22 +195,24 @@ const MealDetails = () => {
                                 Rating: {rating}/5
                             </p>
                             <div>
-                                <div className="flex justify-center items-center gap-2">
+                                <div onClick={handleClicked} className="flex justify-center items-center gap-2">
+                                    {
+                                        isLiked ? <button className="btn" onClick={handleLike}>
+                                            <>
+                                                <IoFastFood className="text-2xl text-orange-500" />
+                                                Like
+                                            </>
+                                        </button>
+                                            :
+                                            <button className="btn" onClick={handleDislike}>
+                                                <>
+                                                    <IoFastFoodOutline className="text-2xl text-orange-500" />
+                                                    Dislike
+                                                </>
+                                            </button>
+                                    }
 
-
-                                    <button className="btn ">
-                                        <>
-                                            <IoFastFood className="text-2xl text-orange-500" />
-                                            Unlike
-                                        </>
-                                    </button>
                                     :
-                                    <button className="btn ">
-                                        <>
-                                            <IoFastFoodOutline className="text-2xl text-orange-500" />
-                                            Like
-                                        </>
-                                    </button>
 
                                     <p className="text-orange-500 font-semibold">liked by: {likes} people</p>
                                 </div>

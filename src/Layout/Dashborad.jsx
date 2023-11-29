@@ -1,4 +1,4 @@
-import { FaBook, FaCrown, FaHandHolding, FaHome,  FaList,  FaPlus,  FaUsers, FaUtensils} from "react-icons/fa";
+import { FaBook, FaCrown, FaHandHolding, FaHome,  FaPlus,  FaUsers, FaUtensils} from "react-icons/fa";
 import {  IoFastFood, IoMenu, IoNewspaper, IoPeople } from "react-icons/io5";
 import { NavLink, Outlet } from "react-router-dom";
 import useAdmin from "../components/hooks/useAdmin";
@@ -77,11 +77,6 @@ const Dashboard = () => {
                             <NavLink to="/dashboard/myReviews">
                                 <IoNewspaper></IoNewspaper>
                                 My Reviews</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dashboard/paymentHistory">
-                                <FaList></FaList>
-                                Payment History</NavLink>
                         </li>
                     </>
             }
