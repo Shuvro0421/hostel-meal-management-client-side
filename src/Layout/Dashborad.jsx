@@ -84,8 +84,8 @@ const Dashboard = () => {
 
 
     return (
-        <div>
-            <div className="lg:hidden drawer">
+        <div className="">
+            <div className="lg:hidden  drawer">
                 <input id="my-drawer" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
                     {/* Page content here */}
@@ -100,13 +100,13 @@ const Dashboard = () => {
             </div>
             <div className="lg:flex hidden">
                 {/* dashboard side bar */}
-                <div className="w-64 min-h-screen  bg-yellow-400">
+                <div className="w-64 min-h-screen  fixed bg-yellow-400">
                     <ul className="menu text-orange-500 p-4">
                         {links}
                     </ul>
                 </div>
                 {/* dashboard content */}
-                <div className="lg:flex-1 lg:p-8 lg:block hidden">
+                <div className="lg:flex-1  items-center justify-center mx-20 ml-96 lg:p-8 lg:block hidden">
                     <Outlet></Outlet>
                 </div>
             </div>
