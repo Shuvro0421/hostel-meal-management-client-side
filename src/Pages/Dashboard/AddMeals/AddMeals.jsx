@@ -1,9 +1,11 @@
 import moment from "moment/moment";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 
 import { FaUtensils } from "react-icons/fa";
 
 import Swal from "sweetalert2";
+import useAuth from "../../../components/hooks/useAuth";
 
 import useAxiosSecure from "../../../components/hooks/useAxiosSecure";
 import HeaderTitles from "../../HeaderTitles/HeaderTitles";
@@ -12,6 +14,7 @@ import HeaderTitles from "../../HeaderTitles/HeaderTitles";
 
 const AddItems = () => {
     const { register, handleSubmit, reset, setValue } = useForm();
+    const { user } = useAuth()
     let likes = 0
     let reviews = 0
     const axiosSecure = useAxiosSecure();
@@ -32,7 +35,7 @@ const AddItems = () => {
             date: currentDate,
             time: currentTime,
             name: data.name,
-            email: data.email,
+            email: user.email,
             mealStatus: data.mealStatus, // 'add meal' or 'upcoming'
             likes: parseInt(likes),
             reviews: parseInt(reviews)
@@ -66,6 +69,9 @@ const AddItems = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Meal Management | Add Meals</title>
+            </Helmet>
             <HeaderTitles heading={'Add Meals'}></HeaderTitles>
             <div className=" drop-shadow-lg">
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -167,20 +173,6 @@ const AddItems = () => {
                                 required
                                 className="input input-bordered w-full" />
                         </div>
-
-                        {/* Email */}
-                        <div className="form-control w-full my-2">
-                            <label className="label">
-                                <span className="label-text">Email*</span>
-                            </label>
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                {...register('email', { required: true })}
-                                required
-                                className="input input-bordered w-full" />
-                        </div>
-
 
                     </div>
                     <div className="space-y-5">

@@ -50,7 +50,7 @@ const MealDetails = () => {
     }
 
     useEffect(() => {
-        fetch('http://localhost:5000/packagePayments')
+        fetch('https://hostel-meal-management-server-side.vercel.app/packagePayments')
             .then(res => res.json())
             .then(data => setNormalUSer(data))
     }, [])
@@ -162,14 +162,14 @@ const MealDetails = () => {
                         <h1 className="md:text-5xl text-2xl w-full font-bold md:text-left text-center merienda text-orange-500">
                             {mealTitle}
                         </h1>
-                        <div className="flex justify-between items-center">
-                            <p className="py-3 font-semibold">
+                        <div className="flex  md:flex-row flex-col md:justify-between md:items-center">
+                            <p className="py-3  font-semibold">
                                 <span className="text-orange-500">
                                     Added by:{" "}
                                 </span>
                                 {name}
                             </p>
-                            <p className="py-3 font-semibold">
+                            <p className="py-3  font-semibold">
                                 <span className="text-orange-500">
                                     Posted at:{" "}
                                 </span>
@@ -196,21 +196,21 @@ const MealDetails = () => {
                             </p>
                             <div>
                                 <div onClick={handleClicked} className="flex justify-center items-center gap-2">
-                                    {
-                                        isLiked ? <button className="btn" onClick={handleLike}>
-                                            <>
-                                                <IoFastFood className="text-2xl text-orange-500" />
-                                                Like
-                                            </>
-                                        </button>
-                                            :
-                                            <button className="btn" onClick={handleDislike}>
-                                                <>
-                                                    <IoFastFoodOutline className="text-2xl text-orange-500" />
-                                                    Dislike
-                                                </>
-                                            </button>
-                                    }
+
+                                    <button className="btn" onClick={handleLike}>
+                                        <>
+                                            <IoFastFood className="text-2xl text-orange-500" />
+                                            Like
+                                        </>
+                                    </button>
+
+                                    <button className="btn" onClick={handleDislike}>
+                                        <>
+                                            <IoFastFoodOutline className="text-2xl text-orange-500" />
+                                            Dislike
+                                        </>
+                                    </button>
+
 
                                     :
 

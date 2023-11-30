@@ -1,17 +1,18 @@
 import  { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import useMeals from '../../components/hooks/useMeals';
-import AllMeal from '../Meals/AllMeal';
+import useUpcomingMeals from '../../../components/hooks/useUpcomingMeals';
+import UpcomingMeal from './UpcomingMeal';
 
-const MealsSection = () => {
+const UpcomingMealSection = () => {
     const [page, setPage] = useState(1);
-    const [meals, hasMore] = useMeals(page);
+    const [upcomingMeals, hasMore] = useUpcomingMeals(page);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedMealType, setSelectedMealType] = useState('');
     const [selectedPrice, setSelectedPrice] = useState('');
+    
 
-    const filteredMeals = meals.filter((meal) => {
+    const filteredMeals = upcomingMeals.filter((meal) => {
         const mealTypeMatches = selectedMealType ? meal.mealType === selectedMealType : true;
 
         let priceRangeMatches = true;
@@ -38,7 +39,7 @@ const MealsSection = () => {
     return (
         <div>
             <Helmet>
-                <title>Meal Management | All Meals</title>
+                <title>Meal Management | Upcoming Meals</title>
             </Helmet>
             <div className="flex md:flex-row flex-col items-center justify-center w-full">
                 <input
@@ -88,7 +89,7 @@ const MealsSection = () => {
                 >
                     <div className="grid grid-cols-1 gap-3 m-5">
                         {filteredMeals.map((meal, index) => (
-                            <AllMeal meal={meal} key={index}></AllMeal>
+                            <UpcomingMeal meal={meal} key={index}></UpcomingMeal>
                         ))}
                     </div>
                 </InfiniteScroll>
@@ -97,4 +98,4 @@ const MealsSection = () => {
     );
 };
 
-export default MealsSection;
+export default UpcomingMealSection;

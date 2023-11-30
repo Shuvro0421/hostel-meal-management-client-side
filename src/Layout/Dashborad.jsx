@@ -1,5 +1,6 @@
-import { FaBook, FaCrown, FaHandHolding, FaHome,  FaPlus,  FaUsers, FaUtensils} from "react-icons/fa";
-import {  IoFastFood, IoMenu, IoNewspaper, IoPeople } from "react-icons/io5";
+import { Helmet } from "react-helmet-async";
+import { FaBook, FaCrown, FaHandHolding, FaHome, FaPlus, FaUsers, FaUtensils } from "react-icons/fa";
+import { IoFastFood, IoMenu, IoNewspaper, IoPeople } from "react-icons/io5";
 import { NavLink, Outlet } from "react-router-dom";
 import useAdmin from "../components/hooks/useAdmin";
 import useRequestMeals from "../components/hooks/useRequestMeals";
@@ -36,22 +37,22 @@ const Dashboard = () => {
                             Add Meals</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/dashboard/manageItems">
+                        <NavLink to="/dashboard/allMealsSection">
                             <IoFastFood></IoFastFood>
                             All Meals</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/dashboard/manageItems">
+                        <NavLink to="/dashboard/allReviews">
                             <FaBook></FaBook>
                             All Reviews</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/dashboard/manageItems">
+                        <NavLink to="/dashboard/serveMeals">
                             <FaHandHolding></FaHandHolding>
                             Serve Meals</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/dashboard/manageItems">
+                        <NavLink to="/dashboard/upcomingMeals">
                             <FaUtensils></FaUtensils>
                             Upcoming Meals</NavLink>
                     </li>
@@ -85,6 +86,9 @@ const Dashboard = () => {
 
     return (
         <div className="">
+            <Helmet>
+                <title>Meal Management | Dashboard</title>
+            </Helmet>
             <div className="lg:hidden  drawer">
                 <input id="my-drawer" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
@@ -93,7 +97,7 @@ const Dashboard = () => {
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <ul className="menu p-4 md:w-60 w-60 text-orange-500 bg-yellow-400 min-h-full">
+                    <ul className="menu p-4 md:w-60 w-60  text-orange-500 bg-yellow-400 min-h-full">
                         {links}
                     </ul>
                 </div>

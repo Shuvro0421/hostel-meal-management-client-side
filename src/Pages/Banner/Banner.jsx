@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import TextTransition, { presets } from 'react-text-transition';
 import HeaderTitles from '../HeaderTitles/HeaderTitles';
 import Packages from '../Packages/Packages';
 import TabsComponent from '../Tab/TabsComponent';
+import WhereWeServe from '../WhereWeServe/WhereWeServe';
 
 
 
@@ -37,7 +39,11 @@ const Banner = () => {
     }, [images.length]);
 
     return (
+
         <div>
+            <Helmet>
+                <title>Meal Management | Banner</title>
+            </Helmet>
             {/* banner start */}
             <div className="relative min-h-screen">
                 {images.map((image, index) => (
@@ -67,6 +73,8 @@ const Banner = () => {
             {/* package start */}
             <HeaderTitles heading={'Our Packages'}></HeaderTitles>
             <Packages></Packages>
+            <HeaderTitles heading={'Where we Serve'}></HeaderTitles>
+            <WhereWeServe></WhereWeServe>
             {/* package end */}
         </div>
     );

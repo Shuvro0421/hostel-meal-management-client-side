@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../components/hooks/useAxiosSecure";
 import HeaderTitles from "../../HeaderTitles/HeaderTitles";
+import { Helmet } from "react-helmet-async";
 
 
 const ManageUsers = () => {
@@ -15,21 +16,21 @@ const ManageUsers = () => {
         }
     })
 
-    const handleMakeAdmin = user =>{
+    const handleMakeAdmin = user => {
         axiosSecure.patch(`/users/admin/${user._id}`)
-        .then(res =>{
-            console.log(res.data)
-            if(res.data.modifiedCount > 0){
-                refetch();
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: `${user.name} is an Admin Now!`,
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
-            }
-        })
+            .then(res => {
+                console.log(res.data)
+                if (res.data.modifiedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: `${user.name} is an Admin Now!`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
     }
 
     const handleDeleteUser = user => {
@@ -61,6 +62,9 @@ const ManageUsers = () => {
 
     return (
         <div className="">
+            <Helmet>
+                <title>Meal Management | Manage Users</title>
+            </Helmet>
             <HeaderTitles heading={'Manage Users'}></HeaderTitles>
             <div className="flex justify-evenly my-4">
                 <h2 className="lg:text-3xl md:text-2xl text-lg  merienda">All Users</h2>

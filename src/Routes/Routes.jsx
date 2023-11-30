@@ -5,13 +5,21 @@ import Dashboard from "../Layout/Dashborad";
 import Banner from "../Pages/Banner/Banner";
 import AddMeals from "../Pages/Dashboard/AddMeals/AddMeals";
 import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
+import AllMealsSection from "../Pages/Dashboard/AllMeals/AllMealsSection";
+import AllReviews from "../Pages/Dashboard/AllReviews/AllReviews";
+
 import ManageUsers from "../Pages/Dashboard/ManageUsers/ManageUsers";
 import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
 import MyReviews from "../Pages/Dashboard/myReviews/myReviews";
 import Payment from "../Pages/Dashboard/Payment/Payment";
 import RequestedMeals from "../Pages/Dashboard/RequestedMeals/RequestedMeals";
+import ServeMeals from "../Pages/Dashboard/ServeMeals/ServeMeals";
+import UpcomingMeals from "../Pages/Dashboard/UpcomingMeals/UpcomingMeals";
+import UpcomingMealSection from "../Pages/Dashboard/UpcomingMealsSection/UpcomingMealsSection";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Login from "../Pages/Login/Login";
 import Main from "../Pages/Main/Main";
+import EditMeals from "../Pages/MealDetails/EditMeals";
 import MealDetails from "../Pages/MealDetails/MealDetails";
 import MealsSection from "../Pages/MealsSection/MealsSection";
 import PackagePayment from "../Pages/Packages/PackagePayment";
@@ -23,6 +31,7 @@ import PrivateRoute from "./PrivateRoute";
 export const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <ErrorPage></ErrorPage>,
     element: <Main></Main>,
     children: [
       {
@@ -40,13 +49,17 @@ export const router = createBrowserRouter([
       {
 
         path: "mealsDetails/:id",
-        loader: ({ params }) => fetch(`http://localhost:5000/meals/${params.id}`),
+        loader: ({ params }) => fetch(`https://hostel-meal-management-server-side.vercel.app/meals/${params.id}`),
         element: <MealDetails></MealDetails>
       },
       {
         path: "mealsSection",
         element: <MealsSection></MealsSection>
       },
+      {
+        path: "upcomingMealSection",
+        element: <UpcomingMealSection></UpcomingMealSection>
+      }
 
 
     ]
@@ -89,6 +102,28 @@ export const router = createBrowserRouter([
       {
         path: 'addMeals',
         element: <AdminRoute><AddMeals></AddMeals></AdminRoute>
+      },
+      {
+        path: 'allMealsSection',
+        element: <AdminRoute><AllMealsSection></AllMealsSection></AdminRoute>
+      },
+      {
+        path: 'editMeals/:id',
+        loader: ({params}) => fetch(`https://hostel-meal-management-server-side.vercel.app/meals/${params.id}`),
+        element: <AdminRoute><EditMeals></EditMeals></AdminRoute>
+
+      },
+      {
+        path: 'allReviews',
+        element: <AdminRoute><AllReviews></AllReviews></AdminRoute>
+      },
+      {
+        path: 'serveMeals',
+        element: <AdminRoute><ServeMeals></ServeMeals></AdminRoute>
+      },
+      {
+        path: 'upcomingMeals',
+        element: <AdminRoute><UpcomingMeals></UpcomingMeals></AdminRoute>
       }
 
     ]

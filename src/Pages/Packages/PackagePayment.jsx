@@ -1,6 +1,7 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import usePackages from "../../components/hooks/usePackages";
 import HeaderTitles from "../HeaderTitles/HeaderTitles";
@@ -27,6 +28,9 @@ const PackagePayment = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Meal Management | Package Payment</title>
+      </Helmet>
       <HeaderTitles heading={"Package Pay"}></HeaderTitles>
       <Elements stripe={stripePromise}>
         <PackageCheckOut packageBox={packageBox}></PackageCheckOut>

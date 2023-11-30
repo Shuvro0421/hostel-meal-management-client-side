@@ -23,7 +23,7 @@ const NavBar = () => {
         <>
             <li><Link>Home</Link></li>
             <li><Link to={'/mealsSection'}>Meals</Link></li>
-            <li><Link>Upcoming Meals</Link></li>
+            <li><Link to={'/upcomingMealSection'}>Upcoming Meals</Link></li>
             <li><Link to={'/dashboard/requestedMeals'}>
                 <div className="relative">
                     <IoIosNotifications className="text-2xl text-orange-500 "></IoIosNotifications>

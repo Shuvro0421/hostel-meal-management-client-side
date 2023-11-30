@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { FaGem } from "react-icons/fa";
 import useAuth from "../../../components/hooks/useAuth";
 import HeaderTitles from "../../HeaderTitles/HeaderTitles";
@@ -11,7 +12,7 @@ const MyProfile = () => {
     const [isUserEmail, setIsUserEmail] = useState([])
 
     useEffect(() => {
-        fetch('http://localhost:5000/packagePayments')
+        fetch('https://hostel-meal-management-server-side.vercel.app/packagePayments')
             .then(res => res.json())
             .then(data => setIsUser(data))
     }, [])
@@ -24,6 +25,9 @@ const MyProfile = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Meal Management | My Profile</title>
+            </Helmet>
             <HeaderTitles heading={'My Profile'}></HeaderTitles>
             <p className="merienda text-center md:text-3xl text-xl">Hey There! {user?.displayName}</p>
             <div className="flex items-center justify-center my-5">
