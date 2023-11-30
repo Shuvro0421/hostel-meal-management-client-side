@@ -17,7 +17,7 @@ import useMeals from "../../../components/hooks/useMeals";
 
 const RequestedMeals = () => {
     const [cart, refetch] = useRequestMeals();
-    const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+    
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
     const [isReviews, setIsReviews] = useState([]);
@@ -81,6 +81,9 @@ const RequestedMeals = () => {
         return b.status.localeCompare(a.status);
     });
 
+    const isSorttedCart = sortedCart.filter(sortedCarted => sortedCarted?.email === user?.email)
+    const totalPrice = isSorttedCart.reduce((total, item) => total + item.price, 0);
+
     return (
         <div>
             <Helmet>
@@ -113,33 +116,36 @@ const RequestedMeals = () => {
                     </thead>
                     <tbody className="text-center">
                         {
-                            sortedCart.map((item, index) => (
-                                <tr key={item._id}>
-                                    <th>{index + 1}</th>
-                                    <td className="flex items-center mt-2 justify-center">
-                                        <div className="">
-                                            <div>
-                                                <div className="">
-                                                    <img className="w-10 h-10 border-2 border-yellow-400 rounded-lg" src={item.mealImage} alt={item.mealTitle} />
+                            user &&
+                            (
+                                isSorttedCart.map((item, index) => (
+                                    <tr key={item._id}>
+                                        <th>{index + 1}</th>
+                                        <td className="flex items-center mt-2 justify-center">
+                                            <div className="">
+                                                <div>
+                                                    <div className="">
+                                                        <img className="w-10 h-10 border-2 border-yellow-400 rounded-lg" src={item.mealImage} alt={item.mealTitle} />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>{item.mealTitle}</td>
-                                    <td>${item.price}</td>
-                                    <td>{item.status}</td>
-                                    <td>{countUserReviews2(item?.likes)}</td>
-                                    <td>{countUserReviews(item?.mealTitle)}</td>
-                                    <th>
-                                        <button
-                                            onClick={() => handleDelete(item._id)}
-                                            className="btn btn-ghost hover:bg-transparent"
-                                        >
-                                            <FaTrashAlt className="text-red-600"></FaTrashAlt>
-                                        </button>
-                                    </th>
-                                </tr>
-                            ))
+                                        </td>
+                                        <td>{item.mealTitle}</td>
+                                        <td>${item.price}</td>
+                                        <td>{item.status}</td>
+                                        <td>{countUserReviews2(item?.likes)}</td>
+                                        <td>{countUserReviews(item?.mealTitle)}</td>
+                                        <th>
+                                            <button
+                                                onClick={() => handleDelete(item._id)}
+                                                className="btn btn-ghost hover:bg-transparent"
+                                            >
+                                                <FaTrashAlt className="text-red-600"></FaTrashAlt>
+                                            </button>
+                                        </th>
+                                    </tr>
+                                ))
+                            )
                         }
                     </tbody>
                 </table>

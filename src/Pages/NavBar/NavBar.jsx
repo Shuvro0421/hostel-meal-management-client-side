@@ -17,7 +17,7 @@ const NavBar = () => {
             .catch(error => console.log(error));
     }
 
-
+    const isSorttedCart = requestMeals.filter(sortedCarted => sortedCarted?.email === user?.email)
 
     const links =
         <>
@@ -27,7 +27,7 @@ const NavBar = () => {
             <li><Link to={'/dashboard/requestedMeals'}>
                 <div className="relative">
                     <IoIosNotifications className="text-2xl text-orange-500 "></IoIosNotifications>
-                    <p className=" text-orange-500 w-4 h-4 text-center  text-xs absolute -top-0 -right-2">{requestMeals.length}</p>
+                    <p className=" text-orange-500 w-4 h-4 text-center  text-xs absolute -top-0 -right-2">{user ? isSorttedCart?.length : 0}</p>
                 </div>
             </Link></li>
 
