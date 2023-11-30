@@ -3,12 +3,15 @@ import { FaBook, FaCrown, FaHandHolding, FaHome, FaPlus, FaUsers, FaUtensils } f
 import { IoFastFood, IoMenu, IoNewspaper, IoPeople } from "react-icons/io5";
 import { NavLink, Outlet } from "react-router-dom";
 import useAdmin from "../components/hooks/useAdmin";
+import useAuth from "../components/hooks/useAuth";
 import useRequestMeals from "../components/hooks/useRequestMeals";
 
 
 
 const Dashboard = () => {
     const [requestedMeals] = useRequestMeals()
+    const {user} = useAuth()
+    const isSorttedCart = requestedMeals.filter(sortedCarted => sortedCarted?.email === user?.email)
 
     // TODO: get isAdmin value from the database
     const [isAdmin] = useAdmin();
@@ -72,7 +75,7 @@ const Dashboard = () => {
                         <li>
                             <NavLink to="/dashboard/requestedMeals">
                                 <IoFastFood></IoFastFood>
-                                Requested Meals ({requestedMeals.length})</NavLink>
+                                Requested Meals ({isSorttedCart.length})</NavLink>
                         </li>
                         <li>
                             <NavLink to="/dashboard/myReviews">
